@@ -53,7 +53,6 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 
 	// your logic here
 	fmt.Println("\n\n\n Hi")
-	fmt.Println("\n\n\n Hi Hi Hi")
 
 	return ctrl.Result{}, nil
 }
