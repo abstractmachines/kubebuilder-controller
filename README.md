@@ -60,3 +60,22 @@ k get crds // guestbooks.webapp.example.com
 ```
 k get guestbook -owide -oyaml  // our sample yaml def
 ```
+## 7. Deploy.
+You can use Docker or other methods such as creating a deployment.
+
+Let's use Docker for now:
+```
+make docker-build docker-push IMG=<some-registry>/<project-name>:tag
+make deploy IMG=<some-registry>/<project-name>:tag
+```
+
+> Result: This will create a `Deployment` and other Kustomize layers, service etc...
+
+## 8. Similar to step 6: kubectl get guestbook .... kubectl get crds
+
+## 9. Shut down
+```
+make uninstall // uninstall CRDs // no more `k get guestbook`
+make undeploy // undeploy controller
+// Shut down `make run` process in terminal
+```
