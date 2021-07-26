@@ -1,0 +1,16 @@
+domain: example.com
+layout:
+- go.kubebuilder.io/v3
+projectName: kubebuilder-tutorial
+repo: github.com/abstractmachines/kubebuilder-tutorial
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: example.com
+  group: webapp
+  kind: Guestbook
+  path: github.com/abstractmachines/kubebuilder-tutorial/api/v1
+  version: v1
+version: "3"
