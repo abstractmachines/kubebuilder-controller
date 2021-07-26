@@ -28,8 +28,10 @@ kubebuilder create api --group webapp --version v1 --kind Guestbook --resource -
 make install
 ```
 
-> Result: `controller-gen` codegen; kustomize build generates `./config/crd` yaml layers and then imperatively `apply`'s CRD to cluster
->> Hence, result: `customresourcedefinition.apiextensions.k8s.io/guestbooks.webapp.example.com created`
+> Results:
+  - This generates yaml, including our CRD's definition/manifest. Note `kind: CustomResourceDefinition`, with `group: webapp.example.com`, and `name` of `guestbook` (lowercase version of the name's `kind: Guestbook`).
+  - `controller-gen` codegen; kustomize build generates `./config/crd` yaml layers and then imperatively `apply`'s CRD to cluster;
+  - Hence, result: `customresourcedefinition.apiextensions.k8s.io/guestbooks.webapp.example.com created`.
 
 > 4. Test it out: Run the Controller
 ```
