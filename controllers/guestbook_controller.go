@@ -82,6 +82,19 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 		Name:      guestbook.Name,
 		Namespace: guestbook.Namespace,
 	}
+	// Match labels / LabelSelector / match app to deployment
+	deployment.Spec.Selector = &metav1.LabelSelector{
+		MatchLabels: map[string]string{
+			"app":  "guestbook",
+			"tier": "frontend",
+		},
+	}
+	// Add those labels to deployment
+	deployment.Spec.Template.ObjectMeta.Labels = map[string]string{
+		"app":  "guestbook",
+		"tier": "frontend",
+	}
+	// create deployment
 	err = r.Create(ctx, &deployment)
 
 	return ctrl.Result{}, err
