@@ -59,10 +59,10 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 
 	// your logic here
 
+	// 1. *** Let's just retrieve a resource. ***
 	// Get the client object:
 	var guestbook webappv1.Guestbook
 
-	// Get(ctx context.Context, key client.ObjectKey, obj client.Object) error
 	err := r.Get(ctx, req.NamespacedName, &guestbook)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
@@ -77,7 +77,7 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	fmt.Println(req.Namespace)
 	fmt.Println(guestbook.Labels)
 
-	// *** Creating a Deployment; experimentation ***
+	// 2. *** Let's create a bare-bones Deployment using only required fields ***
 	deployment := appsv1.Deployment{}
 	deployment.ObjectMeta = metav1.ObjectMeta{
 		Name:      guestbook.Name,
@@ -95,8 +95,10 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 		"app":  "guestbook",
 		"tier": "frontend",
 	}
-	// spec.template.spec.containers required
+	// spec.template.spec.containers required fields
 	deployment.Spec.Template.Spec.Containers = make([]corev1.Container, 1)
+	deployment.Spec.Template.Spec.Containers[0].Name = "frontend"
+	deployment.Spec.Template.Spec.Containers[0].Image = "gcr.io/google-samples/gb-frontend:v4"
 	// create deployment
 	err = r.Create(ctx, &deployment)
 
