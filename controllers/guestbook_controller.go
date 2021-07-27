@@ -21,7 +21,7 @@ import (
 	"fmt"
 
 	"github.com/go-logr/logr"
-	corev1 "k8s.io/api/core/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	// "k8s.io/apimachinery/pkg/api/resource"
@@ -76,24 +76,15 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	fmt.Println(req.Namespace)
 	fmt.Println(guestbook.Labels)
 
-	// Let's play with a Deployment. TODO
-	// appsv1.Deployment
-
 	// *** Creating a Deployment; experimentation ***
-	// Hack: Create a Pod
-	var c client.Client
-	pod := &corev1.Pod{
-		ObjectMeta: metav1.ObjectMeta{
-			Namespace: "namespace",
-			Name:      "name",
-		},
-		// Spec: corev1.PodSpec{ // maybe add labels later, or replicas ...
-		// }
+	deployment := appsv1.Deployment{}
+	deployment.ObjectMeta = metav1.ObjectMeta{
+		Name:      guestbook.Name,
+		Namespace: guestbook.Namespace,
 	}
-	// _ = c.Create(ctx, pod) // crashes, nilptr deref
-	_ = c.Create(context.Background(), pod)
+	err = r.Create(ctx, &deployment)
 
-	return ctrl.Result{}, nil
+	return ctrl.Result{}, err
 }
 
 // SetupWithManager sets up the controller with the Manager.
