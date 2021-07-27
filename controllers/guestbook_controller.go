@@ -21,7 +21,11 @@ import (
 	"fmt"
 
 	"github.com/go-logr/logr"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+
+	// "k8s.io/apimachinery/pkg/api/resource"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -71,6 +75,23 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	fmt.Println(guestbook)
 	fmt.Println(req.Namespace)
 	fmt.Println(guestbook.Labels)
+
+	// Let's play with a Deployment. TODO
+	// appsv1.Deployment
+
+	// *** Creating a Deployment; experimentation ***
+	// Hack: Create a Pod
+	var c client.Client
+	pod := &corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Namespace: "namespace",
+			Name:      "name",
+		},
+		// Spec: corev1.PodSpec{ // maybe add labels later, or replicas ...
+		// }
+	}
+	// _ = c.Create(ctx, pod) // crashes, nilptr deref
+	_ = c.Create(context.Background(), pod)
 
 	return ctrl.Result{}, nil
 }
