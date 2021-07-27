@@ -1,81 +1,35 @@
-# Kubebuilder
+# Kubebuilder tutorial
 
-# Runbook
+> How to build custom controllers, the easy way.
+- Clone https://book.kubebuilder.io/
+- Inspired by https://github.com/sethp-nr/guestbook-workshop
 
-## 1. Kubebuilder init
+# Runbooks
+Not a tutorial based on theory. Just some basic developer workflow runbooks.
+## Runbook (startup)
+- After running [Kubebuilder init and startup basics for project](./INIT.md),
+- including a `make install`, `make run`, and probably an `apply`,
+- follow the `Developer Workflow` loop below.
+## Developer workflow for custom controllers
+1. Run controller (`make run`).
+2. Make changes to code while running controller.
+3. `apply` to cluster and note changes.
 
-```
-kubebuilder init --domain example.com --repo github.com/abstractmachines/kubebuilder-tutorial
-```
+Note that the `apply` will cause the `Reconciler` to "reconcile." So `apply`ing a change to the cluster will, for example, `log` any `printf` statements in the controller's `reconcile()` function.
+## Sample controller workflow: log statement
+1. Make change in guestbook controller's `Reconcile` code (add `fmt.Println("henlo")`).
+2. `apply` to cluster: `apply -f ./config/samples`.
+3. See the controller print "henlo" in the `make run` terminal window/tmux window.
 
-Or
-```
-kubebuilder init --domain example.com --repo github.com/abstractmachines/kubebuilder-tutorial --skip-go-version-check
-```
-
-> Result: codegen scaffolded project
-
-## 2. Create API (also scaffold controllers and resource).
-
-```
-kubebuilder create api --group webapp --version v1 --kind Guestbook --resource --controller
-```
-
-> Result: codegen `api/v1/guestbook_types.go` `controllers/guestbook_controller.go`
-
-## 3. Test it out: Install CRDs into cluster
-```
-make install
-```
-
-> Results:
-  - This generates yaml, including our CRD's definition/manifest. Note `kind: CustomResourceDefinition`, with `group: webapp.example.com`, and `name` of `guestbook` (lowercase version of the name's `kind: Guestbook`).
-  - `controller-gen` codegen; kustomize build generates `./config/crd` yaml layers and then imperatively `apply`'s CRD to cluster;
-  - Hence, result: `customresourcedefinition.apiextensions.k8s.io/guestbooks.webapp.example.com created`.
-
-## 4. Test it out: Run the Controller
-```
-make run
-```
-
-This will `go run main.go` and `controller runtime`
-
-## 5. Test it out: `apply` instances of Custom Resources
-In new tab:
-```
-k apply -f config/samples/
-```
-
-> Result: This actually applies our custom resource `kind: Guestbook` into cluster.
-
-## 6. kubectl get guestbook .... kubectl get crds
-```
-k get guestbook // shows cr guestbook and time of creation
-```
-
-```
-k get crds // guestbooks.webapp.example.com 
-```
-
-```
-k get guestbook -owide -oyaml  // our sample yaml def
-```
-## 7. Deploy.
-You can use Docker or other methods such as creating a deployment.
-
-Let's use Docker for now:
-```
-make docker-build docker-push IMG=<some-registry>/<project-name>:tag
-make deploy IMG=<some-registry>/<project-name>:tag
-```
-
-> Result: This will create a `Deployment` and other Kustomize layers, service etc...
-
-## 8. Similar to step 6: kubectl get guestbook .... kubectl get crds
-
-## 9. Shut down
-```
-make uninstall // uninstall CRDs // no more `k get guestbook`
-make undeploy // undeploy controller
-// Shut down `make run` process in terminal
-```
+## Sample controller workflow: add labels
+1. Run controller (`make run`).
+2. Add labels to `./config/samples/webapp_v1_guestbook.yaml` under `metadata`
+  ```
+  metadata:
+  name: guestbook-sample
+  labels:
+    is-awesome: totes
+    is-bad: nopes
+  ```
+3. `apply` to cluster: `apply -f ./config/samples`.
+4. Use CLI label selector. `k get guestbook -l is-awesome=totes`. You'll see `guestbook` crd.
