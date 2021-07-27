@@ -1,4 +1,4 @@
-# Kubebuilder tutorial
+# Kubebuilder: Controllers, CRDs, and Operators
 
 > How to build custom controllers, the easy way.
 >> To begin, clone (quickstart or kube builder book): [https://book.kubebuilder.io/](https://book.kubebuilder.io/)
@@ -46,7 +46,9 @@ Workflows for developing custom CRDs and controllers (custom operators).
 2. Run controller (`make run`).
 3. Note changes
 
-> Create a basic deployment
+> **Create a basic Deployment**
 - Use this document [DEPLOYMENT-CONTROLLERRUNTIME.md](DEPLOYMENT-CONTROLLERRUNTIME.md)
 - Topics covered: `controller runtime pkg`, `client pkg`, `appsv1 pkg`, etc
 - You'll learn how to navigate the Kubernetes API at pkg.go.dev
+
+> **Create a basic Service**
