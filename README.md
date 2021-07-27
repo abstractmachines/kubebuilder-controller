@@ -45,3 +45,8 @@ Workflows for developing custom CRDs and controllers (custom operators).
 1. Use Reconciler function in Controller to `Get` object properties from `NamespacedName` struct.
 2. Run controller (`make run`).
 3. Note changes
+
+> Create a basic deployment
+- Use this document [DEPLOYMENT-CONTROLLERRUNTIME.md](DEPLOYMENT-CONTROLLERRUNTIME.md)
+- Topics covered: `controller runtime pkg`, `client pkg`, `appsv1 pkg`, etc
+- You'll learn how to navigate the Kubernetes API at pkg.go.dev
