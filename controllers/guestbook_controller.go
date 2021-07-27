@@ -52,7 +52,23 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	_ = r.Log.WithValues("guestbook", req.NamespacedName)
 
 	// your logic here
-	fmt.Println("\n\n\n Hi")
+
+	// Get the client object:
+	var guestbook webappv1.Guestbook
+
+	// Get(ctx context.Context, key client.ObjectKey, obj client.Object) error
+	err := r.Get(ctx, req.NamespacedName, &guestbook)
+	if err != nil {
+		fmt.Println("ruh oh.")
+		return ctrl.Result{}, err
+	}
+
+	// We now have our custom resource, its namespace, labels ...
+
+	fmt.Print("successfully retrieved guestbook resource:")
+	fmt.Println(guestbook)
+	fmt.Println(req.Namespace)
+	fmt.Println(guestbook.Labels)
 
 	return ctrl.Result{}, nil
 }

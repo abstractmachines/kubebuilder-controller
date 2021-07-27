@@ -16,12 +16,16 @@ Not a tutorial based on theory. Just some basic developer workflow runbooks.
 3. `apply` to cluster and note changes.
 
 Note that the `apply` will cause the `Reconciler` to "reconcile." So `apply`ing a change to the cluster will, for example, `log` any `printf` statements in the controller's `reconcile()` function.
-## Sample controller workflow: log statement
+
+## Sample Controller workflows
+Workflows for developing custom CRDs and controllers (custom operators).
+
+> Log statement:
 1. Make change in guestbook controller's `Reconcile` code (add `fmt.Println("henlo")`).
-2. `apply` to cluster: `apply -f ./config/samples`.
+2. Run controller (`make run`).
 3. See the controller print "henlo" in the `make run` terminal window/tmux window.
 
-## Sample controller workflow: add labels
+>  Add labels imperatively and apply to cluster:
 1. Run controller (`make run`).
 2. Add labels to `./config/samples/webapp_v1_guestbook.yaml` under `metadata`
   ```
@@ -33,3 +37,8 @@ Note that the `apply` will cause the `Reconciler` to "reconcile." So `apply`ing 
   ```
 3. `apply` to cluster: `apply -f ./config/samples`.
 4. Use CLI label selector. `k get guestbook -l is-awesome=totes`. You'll see `guestbook` crd.
+
+> Get guestbook CRD, its labels, its namespace ...
+1. Use Reconciler function in Controller to `Get` object properties from `NamespacedName` struct.
+2. Run controller (`make run`).
+3. Note changes
