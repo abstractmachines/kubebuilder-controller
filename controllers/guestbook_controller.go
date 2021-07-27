@@ -21,6 +21,7 @@ import (
 	"fmt"
 
 	"github.com/go-logr/logr"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -59,12 +60,13 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	// Get(ctx context.Context, key client.ObjectKey, obj client.Object) error
 	err := r.Get(ctx, req.NamespacedName, &guestbook)
 	if err != nil {
-		fmt.Println("ruh oh.")
+		if apierrors.IsNotFound(err) {
+			return ctrl.Result{}, nil
+		}
 		return ctrl.Result{}, err
 	}
 
 	// We now have our custom resource, its namespace, labels ...
-
 	fmt.Print("successfully retrieved guestbook resource:")
 	fmt.Println(guestbook)
 	fmt.Println(req.Namespace)
