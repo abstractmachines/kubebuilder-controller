@@ -1,8 +1,11 @@
 # Kubebuilder tutorial
 
 > How to build custom controllers, the easy way.
-- Clone https://book.kubebuilder.io/
+>> To begin, clone (quickstart or kube builder book): [https://book.kubebuilder.io/](https://book.kubebuilder.io/)
+
 - Inspired by https://github.com/sethp-nr/guestbook-workshop
+- See also: [https://maelvls.dev/learning-kubernetes-controllers/](https://maelvls.dev/learning-kubernetes-controllers/)
+- See also: [Kubernetes community document on controllers](https://github.com/kubernetes/community/blob/712590c108bd4533b80e8f2753cadaa617d9bdf2/contributors/devel/sig-api-machinery/controllers.md)
 
 # Runbooks
 Not a tutorial based on theory. Just some basic developer workflow runbooks.
