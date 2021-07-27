@@ -22,6 +22,7 @@ import (
 
 	"github.com/go-logr/logr"
 	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	// "k8s.io/apimachinery/pkg/api/resource"
@@ -94,6 +95,8 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 		"app":  "guestbook",
 		"tier": "frontend",
 	}
+	// spec.template.spec.containers required
+	deployment.Spec.Template.Spec.Containers = make([]corev1.Container, 1)
 	// create deployment
 	err = r.Create(ctx, &deployment)
 
