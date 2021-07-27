@@ -1,8 +1,11 @@
 # Kubebuilder tutorial
 
 > How to build custom controllers, the easy way.
-- Clone https://book.kubebuilder.io/
+>> To begin, clone (quickstart or kube builder book): [https://book.kubebuilder.io/](https://book.kubebuilder.io/)
+
 - Inspired by https://github.com/sethp-nr/guestbook-workshop
+- See also: [https://maelvls.dev/learning-kubernetes-controllers/](https://maelvls.dev/learning-kubernetes-controllers/)
+- See also: [Kubernetes community document on controllers](https://github.com/kubernetes/community/blob/712590c108bd4533b80e8f2753cadaa617d9bdf2/contributors/devel/sig-api-machinery/controllers.md)
 
 # Runbooks
 Not a tutorial based on theory. Just some basic developer workflow runbooks.
@@ -42,3 +45,8 @@ Workflows for developing custom CRDs and controllers (custom operators).
 1. Use Reconciler function in Controller to `Get` object properties from `NamespacedName` struct.
 2. Run controller (`make run`).
 3. Note changes
+
+> Create a basic deployment
+- Use this document [DEPLOYMENT-CONTROLLERRUNTIME.md](DEPLOYMENT-CONTROLLERRUNTIME.md)
+- Topics covered: `controller runtime pkg`, `client pkg`, `appsv1 pkg`, etc
+- You'll learn how to navigate the Kubernetes API at pkg.go.dev
