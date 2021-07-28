@@ -76,6 +76,8 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	fmt.Println(guestbook)
 	fmt.Println(req.Namespace)
 	fmt.Println(guestbook.Labels)
+	// Guestbook replicas:
+	fmt.Println("successfully retrieved replicas:", guestbook.Spec.Frontend.Replicas)
 
 	// 2. *** Let's create a bare-bones Deployment using only required fields ***
 	deployment := appsv1.Deployment{}

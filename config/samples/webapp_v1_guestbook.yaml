@@ -8,3 +8,5 @@ metadata:
 spec:
   # Add fields here
   foo: bar
+  frontend:
+    replicas: 3
