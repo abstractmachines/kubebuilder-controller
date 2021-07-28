@@ -55,5 +55,3 @@
 You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate."
 
 [https://kubernetes.io/docs/concepts/workloads/controllers/deployment/](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
-
-7. Note that once our CRD `guestbook` is up again and so 
