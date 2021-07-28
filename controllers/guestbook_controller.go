@@ -24,6 +24,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/types"
 
 	// "k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -79,12 +80,49 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	// Guestbook replicas:
 	fmt.Println("successfully retrieved replicas:", guestbook.Spec.Frontend.Replicas)
 
-	// 2. *** Let's create a bare-bones Deployment using only required fields ***
+	// 2. *** Let's create replicas ***
+	replicas := int32(3)
+
+	if guestbook.Spec.Frontend.Replicas != nil {
+		replicas = *guestbook.Spec.Frontend.Replicas
+	}
+
+	// TODO:
+	// fmt.Println("successfully retrieved replicas:", guestbook.Spec.Frontend.Replicas)
+
+	// 3. *** Let's create a bare-bones Deployment using only required fields ***
 	deployment := appsv1.Deployment{}
+
+	// 4. *** Updating existing deployment with spec of scaled replicas ***
+	// Does a Deployment with this name in this ns already exist?
+	err = r.Get(ctx, types.NamespacedName{
+		Name:      guestbook.Name,
+		Namespace: guestbook.Namespace,
+	}, &deployment)
+
+	// 5. If deployment already exists (GET deployment has no error),
+	// we'll want to update it, and return before Create().
+	if err == nil {
+		deployment.Spec.Replicas = &replicas
+
+		err = r.Update(ctx, &deployment)
+
+		// and handle errors resulting from that operation ...
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+		return ctrl.Result{}, nil
+	} else if !apierrors.IsNotFound(err) {
+		return ctrl.Result{}, err
+	}
+
+	// 6. If we're here, we haven't found an existing Deployment and hence returned.
+	// So, we'll create a new deployment.
 	deployment.ObjectMeta = metav1.ObjectMeta{
 		Name:      guestbook.Name,
 		Namespace: guestbook.Namespace,
 	}
+
 	// Match labels / LabelSelector / match app to deployment
 	deployment.Spec.Selector = &metav1.LabelSelector{
 		MatchLabels: map[string]string{
@@ -92,6 +130,10 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 			"tier": "frontend",
 		},
 	}
+
+	// add replicas to deployment's spec
+	deployment.Spec.Replicas = &replicas
+
 	// Add those labels to deployment
 	deployment.Spec.Template.ObjectMeta.Labels = map[string]string{
 		"app":  "guestbook",
