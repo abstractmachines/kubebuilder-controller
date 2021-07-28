@@ -45,11 +45,15 @@
 > Note that when we apply those changes, our `deployment` still isn't affected.
 
 - To see this in action, run `k get deployment -n default guestbook-sample -oyaml`.
-- Note that `replicas` in both `state` and `spec` for our YAML def here _all say one, not 3._
+- Note that `replicas` in both `state` and `spec` for our YAML def here _all say 1, not 3._
 - Further, our output from running `make run` for our controller won't print out "hey, 3 spec replicas!" It'll be some HEX memory location mess.
 > **This is because we didn't update our deployment.**
 
 ## What's a Deployment again?
+"A Deployment provides declarative updates for Pods and ReplicaSets.
 
+You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate."
+
+[https://kubernetes.io/docs/concepts/workloads/controllers/deployment/](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
 7. Note that once our CRD `guestbook` is up again and so 
