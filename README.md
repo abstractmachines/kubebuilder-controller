@@ -7,6 +7,10 @@
 - See also: [https://maelvls.dev/learning-kubernetes-controllers/](https://maelvls.dev/learning-kubernetes-controllers/)
 - See also: [Kubernetes community document on controllers](https://github.com/kubernetes/community/blob/712590c108bd4533b80e8f2753cadaa617d9bdf2/contributors/devel/sig-api-machinery/controllers.md)
 
+# For the impatient
+> The substantive part of this tutorial is in these two files:
+1. [DEPLOYMENT-CONTROLLERRUNTIME.md](DEPLOYMENT-CONTROLLERRUNTIME.md)
+2. [REPLICAS-UPDATE-DEPLOYMENT.md](REPLICAS-UPDATE-DEPLOYMENT.md)
 # Runbooks
 Not a tutorial based on theory. Just some basic developer workflow runbooks.
 ## Runbook (startup)
@@ -14,11 +18,12 @@ Not a tutorial based on theory. Just some basic developer workflow runbooks.
 - including a `make install`, `make run`, and probably an `apply`,
 - follow the `Developer Workflow` loop below.
 ## Developer workflow for custom controllers
-1. Run controller (`make run`).
-2. Make changes to code while running controller.
-3. `apply` to cluster and note changes.
+1. Install custom types and generate code `make install`.
+2. Run controller (`make run`).
+3. Make changes to code while running controller.
+4. in new terminal, `apply` changes to cluster and note changes. `kubectl apply -f config/samples`.
 
-Note that the `apply` will cause the `Reconciler` to "reconcile." So `apply`ing a change to the cluster will, for example, `log` any `printf` statements in the controller's `reconcile()` function.
+Note that the `apply` will cause the `Reconciler` to "reconcile." So `apply`ing a change to the cluster will, for example, `log` any `print/log` statements in the controller's `reconcile()` function.
 
 ## Sample Controller workflows
 Workflows for developing custom CRDs and controllers (custom operators).
@@ -52,7 +57,7 @@ Workflows for developing custom CRDs and controllers (custom operators).
 - You'll learn how to navigate the Kubernetes API at pkg.go.dev
 
 > **Specify a desired state (scaled replicas), and update Deployment**
-- Use this document [REPLICAS-UPDATE-DEPLOYMENT.md.md](REPLICAS-UPDATE-DEPLOYMENT.md.md)
+- Use this document [REPLICAS-UPDATE-DEPLOYMENT.md](REPLICAS-UPDATE-DEPLOYMENT.md)
 - Topics covered: `types`, `schemas`, more details on `Deployments`
 
 > **Create a basic Service**
