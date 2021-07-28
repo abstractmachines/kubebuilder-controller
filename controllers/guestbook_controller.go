@@ -102,6 +102,13 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	// create deployment
 	err = r.Create(ctx, &deployment)
 
+	// 3. *** Create a Service ***
+	service := &corev1.Service{}
+	service.ObjectMeta = metav1.ObjectMeta{
+		Name:      guestbook.Name,
+		Namespace: guestbook.Namespace,
+	}
+
 	return ctrl.Result{}, err
 }
 
