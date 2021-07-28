@@ -51,4 +51,9 @@ Workflows for developing custom CRDs and controllers (custom operators).
 - Topics covered: `controller runtime pkg`, `client pkg`, `appsv1 pkg`, etc
 - You'll learn how to navigate the Kubernetes API at pkg.go.dev
 
+> **Specify a desired state (scaled replicas), and update Deployment**
+- Use this document [REPLICAS-UPDATE-DEPLOYMENT.md.md](REPLICAS-UPDATE-DEPLOYMENT.md.md)
+- Topics covered: `types`, `schemas`, more details on `Deployments`
+
 > **Create a basic Service**
+...

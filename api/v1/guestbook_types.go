@@ -28,8 +28,15 @@ type GuestbookSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
+	Frontend FrontendSpec `json:"frontend"`
+
 	// Foo is an example field of Guestbook. Edit guestbook_types.go to remove/update
 	Foo string `json:"foo,omitempty"`
+}
+
+type FrontendSpec struct {
+	// +optional
+	Replicas *int32 `json:"replicas,omitempty"`
 }
 
 // GuestbookStatus defines the observed state of Guestbook
