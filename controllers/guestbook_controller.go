@@ -18,7 +18,6 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-logr/logr"
 	appsv1 "k8s.io/api/apps/v1"
@@ -56,7 +55,7 @@ type GuestbookReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.7.2/pkg/reconcile
 func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = r.Log.WithValues("guestbook", req.NamespacedName)
+	log := r.Log.WithValues("guestbook", req.NamespacedName)
 
 	// your logic here
 
@@ -73,12 +72,10 @@ func (r *GuestbookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	}
 
 	// We now have our custom resource, its namespace, labels ...
-	fmt.Print("successfully retrieved guestbook resource:")
-	fmt.Println(guestbook)
-	fmt.Println(req.Namespace)
-	fmt.Println(guestbook.Labels)
-	// Guestbook replicas:
-	fmt.Println("successfully retrieved replicas:", guestbook.Spec.Frontend.Replicas)
+	log.Info("successfully retrieved guestbook resource:", "resource", guestbook)
+	log.Info("Guestbook namespace", "namespace", req.Namespace)
+	log.Info("Guestbook labels", "labels", guestbook.Labels)
+	log.Info("Successfully retrieved Guestbook", "replicas", guestbook.Spec.Frontend.Replicas)
 
 	// 2. *** Let's create replicas ***
 	replicas := int32(3)
